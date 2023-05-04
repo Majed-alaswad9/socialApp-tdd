@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "698111053998",
+    "project_id": "social-app-tdd",
+    "storage_bucket": "social-app-tdd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:698111053998:android:485803fe4071d9a2285d3f",
+        "android_client_info": {
+          "package_name": "com.example.social_app_tdd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "698111053998-f4thp6kah13vgv78tcctend72ft5j82a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYbHL5vZwKjTTQn1EcL_9NhqZV0EcR78I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "698111053998-f4thp6kah13vgv78tcctend72ft5j82a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
