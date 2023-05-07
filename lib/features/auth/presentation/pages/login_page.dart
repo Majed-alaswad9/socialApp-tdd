@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app_tdd/core/util/snackbar_message.dart';
 import 'package:social_app_tdd/core/widget/loading_widget.dart';
 import 'package:social_app_tdd/features/auth/presentation/widget/login_form_widget.dart';
+import 'package:social_app_tdd/features/posts/presentation/pages/feed_page.dart';
 import 'package:social_app_tdd/injection_container.dart' as di;
 import '../../../../core/theme.dart';
 import '../bloc/auth/auth_bloc.dart';
@@ -35,10 +36,10 @@ class LoginPage extends StatelessWidget {
           listener: (context, state) {
             if (state is SuccessLoginState) {
               SnackBarMessage().snackBarMessageSuccess(context, state.message);
-              // Navigator.pushAndRemoveUntil(
-              //     context,
-              //     MaterialPageRoute(builder: (context) => const FeedScreen()),
-              //     (route) => false);
+              Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => const FeedPage()),
+                  (route) => false);
             } else if (state is ErrorLoginState) {
               SnackBarMessage().snackBarMessageError(context, state.error);
             }

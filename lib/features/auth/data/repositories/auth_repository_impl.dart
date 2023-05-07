@@ -3,6 +3,7 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
 import '../../../../core/network_info.dart';
+import '../../../../core/strings/id_and_token.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_datasources.dart';
 import '../datasources/auth_remote_datasource.dart';
@@ -22,6 +23,7 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         await authRemoteDataSource.login(email, password);
+        await authLocalDataSource.cacheLogin(id: userId!);
         return const Right(unit);
       } on ServerException {
         return Left(ServerFailure());

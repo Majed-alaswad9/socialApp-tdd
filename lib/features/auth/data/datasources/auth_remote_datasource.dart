@@ -23,6 +23,8 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
+      userId = value.user!.uid;
+      print(userId!);
       return Future.value(unit);
     }).catchError((error) {
       throw ServerException();
@@ -35,7 +37,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
-      userId = value.user!.uid;
       return Future.value(unit);
     }).catchError((error) {
       throw ServerException();

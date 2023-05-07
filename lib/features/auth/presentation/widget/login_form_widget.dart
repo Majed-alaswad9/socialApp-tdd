@@ -17,75 +17,80 @@ class LoginFormWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: formKey,
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Text(
-            'Log In',
-            style: TextStyle(
-                fontSize: 40, fontWeight: FontWeight.bold, color: primaryColor),
-          ),
-          const SizedBox(
-            height: 30,
-          ),
-          TextFormFileWidget(
-              controller: emailController,
-              validate: validateEmail,
-              hintText: 'Email',
-              icon: Icons.email,
-              textInputType: TextInputType.emailAddress),
-          const SizedBox(height: 20),
-          TextFormFileWidget(
-              controller: passController,
-              obscureText: true,
-              validate: validatePassword,
-              hintText: 'Password',
-              icon: Icons.lock,
-              textInputType: TextInputType.visiblePassword),
-          const SizedBox(
-            height: 20,
-          ),
-          Container(
-            width: double.infinity,
-            color: primaryColor,
-            child: TextButton(
-              onPressed: () {
-                if (formKey.currentState!.validate()) {
-                  BlocProvider.of<AuthBloc>(context).add(
-                      LoginEvent(emailController.text, passController.text));
-                }
-              },
-              child: const Text(
-                'LOGIN',
-                style: TextStyle(fontSize: 25, color: Colors.white),
-              ),
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Form(
+        key: formKey,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Log In',
+              style: TextStyle(
+                  fontSize: 40,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor),
             ),
-          ),
-          const SizedBox(
-            height: 20,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Text(
-                'Don\'t have an account?',
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-              TextButton(
+            const SizedBox(
+              height: 30,
+            ),
+            TextFormFileWidget(
+                controller: emailController,
+                validate: validateEmail,
+                hintText: 'Email',
+                icon: Icons.email,
+                textInputType: TextInputType.emailAddress),
+            const SizedBox(height: 20),
+            TextFormFileWidget(
+                controller: passController,
+                obscureText: true,
+                validate: validatePassword,
+                hintText: 'Password',
+                icon: Icons.lock,
+                textInputType: TextInputType.visiblePassword),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: double.infinity,
+              color: primaryColor,
+              child: TextButton(
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const SignupPage()));
+                  if (formKey.currentState!.validate()) {
+                    BlocProvider.of<AuthBloc>(context).add(
+                        LoginEvent(emailController.text, passController.text));
+                  }
                 },
                 child: const Text(
-                  'Register',
-                  style: TextStyle(fontSize: 15),
+                  'LOGIN',
+                  style: TextStyle(fontSize: 25, color: Colors.white),
                 ),
-              )
-            ],
-          ),
-        ],
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  'Don\'t have an account?',
+                  style: Theme.of(context).textTheme.titleMedium,
+                ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const SignupPage()));
+                  },
+                  child: const Text(
+                    'Register',
+                    style: TextStyle(fontSize: 15),
+                  ),
+                )
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
