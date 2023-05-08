@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:social_app_tdd/core/widget/build_popup_menu_buuton_widget.dart';
+import 'package:social_app_tdd/core/theme.dart';
+import 'package:social_app_tdd/features/posts/presentation/pages/add_post_page.dart';
 import 'package:social_app_tdd/features/posts/presentation/widgets/build_feed_page_widget.dart';
-
-import '../../../../core/theme.dart';
-import '../../../../core/widget/message_display_widget.dart';
 
 class FeedPage extends StatelessWidget {
   const FeedPage({Key? key}) : super(key: key);
@@ -15,6 +13,14 @@ class FeedPage extends StatelessWidget {
         title: Text('Feed'),
       ),
       body: _buildBody(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+              context, MaterialPageRoute(builder: (_) => AddPostPage()));
+        },
+        backgroundColor: primaryColor,
+        child: Icon(Icons.add),
+      ),
     );
   }
 

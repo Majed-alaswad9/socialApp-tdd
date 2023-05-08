@@ -1,9 +1,9 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app_tdd/core/util/snackbar_message.dart';
+import 'package:social_app_tdd/features/posts/presentation/widgets/elevated_button_widget.dart';
 
 import '../../../../core/theme.dart';
-import '../../../../core/widget/build_popup_menu_buuton_widget.dart';
-import '../../../../core/widget/message_display_widget.dart';
+import '../../../../core/widget/build_popup_menu_button_widget.dart';
 
 class BuildFeedPageWidget extends StatelessWidget {
   const BuildFeedPageWidget({Key? key}) : super(key: key);
@@ -52,13 +52,9 @@ class BuildFeedPageWidget extends StatelessWidget {
                     const BuildPopupMenuBottom()
                   ],
                 ),
-                Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 1,
-                    color: Colors.grey,
-                  ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 2,
                 ),
                 Text(
                   'content post',
@@ -94,49 +90,8 @@ class BuildFeedPageWidget extends StatelessWidget {
                           child: InkWell(
                             highlightColor: primaryColor,
                             onTap: () {
-                              const MessageDisplayWidget(
-                                message: "just a second",
-                              );
-                              // PurpleBookCubit.get(context)
-                              //     .getLikesPost(id: feed.posts![index].sId!)
-                              //     .then((value) {
-                              //   showModalBottomSheet(
-                              //     context: contexts,
-                              //     isScrollControlled: true,
-                              //     shape: const RoundedRectangleBorder(
-                              //         borderRadius: BorderRadius.vertical(
-                              //             top: Radius.circular(20))),
-                              //     builder: (context) => ConditionalBuilder(
-                              //       condition: PurpleBookCubit.get(contexts)
-                              //           .likeModule!
-                              //           .users!
-                              //           .isNotEmpty,
-                              //       builder: (context) => ListView.separated(
-                              //           shrinkWrap: true,
-                              //           physics:
-                              //               const NeverScrollableScrollPhysics(),
-                              //           itemBuilder: (context, index) =>
-                              //               buildBottomSheet(
-                              //                   PurpleBookCubit.get(contexts)
-                              //                       .likeModule!,
-                              //                   index,
-                              //                   contexts),
-                              //           separatorBuilder: (context, index) =>
-                              //               const SizedBox(
-                              //                 height: 10,
-                              //               ),
-                              //           itemCount: PurpleBookCubit.get(contexts)
-                              //               .likeModule!
-                              //               .users!
-                              //               .length),
-                              //       fallback: (context) => const Center(
-                              //           child: Text(
-                              //         'Not Likes Yet',
-                              //         style: TextStyle(fontSize: 25),
-                              //       )),
-                              //     ),
-                              //   );
-                              // });
+                              SnackBarMessage().snackBarMessageSuccess(
+                                  context, 'Just a Second');
                             },
                             child: Text(
                               'like',
@@ -154,15 +109,7 @@ class BuildFeedPageWidget extends StatelessWidget {
                           child: SizedBox(
                             height: 30,
                             child: InkWell(
-                              onTap: () {
-                                // navigatorPush(
-                                //     context: contexts,
-                                //     widget: ViewPostScreen(
-                                //       id: feed.posts![index].sId!,
-                                //       addComment: false,
-                                //       isFocus: false,
-                                //     ));
-                              },
+                              onTap: () {},
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
@@ -191,77 +138,24 @@ class BuildFeedPageWidget extends StatelessWidget {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 8.0),
-                  child: Container(
-                    width: double.infinity,
-                    height: 2,
-                    color: Colors.grey,
-                  ),
+                const Divider(
+                  color: Colors.grey,
+                  thickness: 2,
                 ),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Expanded(
-                      child: InkWell(
-                        child: Container(
-                          padding: const EdgeInsets.all(10),
-                          height: 40,
-                          decoration: const BoxDecoration(
-                              // color: MainCubit.get(contexts).isDark
-                              //     ? Colors.grey.shade500
-                              //     : Colors.grey.shade200,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(15))),
-                          child: Text(
-                            'Write Comment...',
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
-                        onTap: () {
-                          // navigatorPush(
-                          //     context: contexts,
-                          //     widget: ViewPostScreen(
-                          //       id: feed.posts![index].sId!,
-                          //       addComment: true,
-                          //       isFocus: false,
-                          //     ));
-                        },
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    ElevatedButton(
-                        style: ButtonStyle(backgroundColor:
-                            MaterialStateColor.resolveWith((states) {
-                          if (states.isEmpty) return primaryColor;
-                          return secondaryColor;
-                        })),
-                        onPressed: () {},
-                        child: Row(
-                          children: const [
-                            Icon(
-                              Icons.thumb_up,
-                              size: 20,
-                              //  color:
-                              // PurpleBookCubit.get(contexts).isLikePost![index]
-                              //     ? const Color(0xFF6823D0)
-                              //     : Colors.grey,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text('like',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  // color: PurpleBookCubit.get(contexts)
-                                  //         .isLikePost![index]
-                                  //     ? const Color(0xFF6823D0)
-                                  //     : Colors.grey,
-                                ))
-                          ],
-                        ))
+                    ElevatedButtonWidget(
+                        onPress: () {},
+                        txt: 'Chat',
+                        icon: Icons.mark_unread_chat_alt_outlined),
+                    ElevatedButtonWidget(
+                        onPress: () {}, txt: 'Comment', icon: Icons.comment),
+                    ElevatedButtonWidget(
+                        onPress: () {},
+                        txt: 'Like',
+                        icon: Icons.thumb_up_alt_rounded),
                   ],
                 )
               ],
@@ -269,7 +163,7 @@ class BuildFeedPageWidget extends StatelessWidget {
           ),
         ),
       ),
-      separatorBuilder: (BuildContext context, int index) => SizedBox(
+      separatorBuilder: (BuildContext context, int index) => const SizedBox(
         height: 10,
       ),
     );
