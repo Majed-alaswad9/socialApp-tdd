@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_tdd/core/theme.dart';
 import 'package:social_app_tdd/features/posts/presentation/pages/add_post_page.dart';
@@ -11,6 +12,13 @@ class FeedPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Feed'),
+        actions: [
+          TextButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              child: Text('Log Out'))
+        ],
       ),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
