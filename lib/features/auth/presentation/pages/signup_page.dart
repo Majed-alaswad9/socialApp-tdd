@@ -38,8 +38,6 @@ class SignupPage extends StatelessWidget {
           listener: (context, state) {
             if (state is SuccessSignupState) {
               SnackBarMessage().snackBarMessageSuccess(context, state.message);
-              BlocProvider.of<AuthBloc>(context).add(CreateUserEvent(
-                  state.userName, state.email, state.password, state.uId));
             } else if (state is ErrorSignupState) {
               SnackBarMessage().snackBarMessageError(context, state.error);
             }

@@ -1,4 +1,7 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
+import 'package:image_picker/image_picker.dart';
 
 abstract class AuthEvent extends Equatable {
   const AuthEvent();
@@ -21,21 +24,19 @@ class SignupEvent extends AuthEvent {
   final String userName;
   final String email;
   final String password;
+  File? profileImage;
 
-  const SignupEvent(this.userName, this.email, this.password);
+  SignupEvent(this.userName, this.email, this.password, this.profileImage);
 
   @override
-  List<Object?> get props => [userName, email, password];
+  List<Object?> get props => [userName, email, password, profileImage];
 }
 
-class CreateUserEvent extends AuthEvent {
-  final String userName;
-  final String email;
-  final String password;
-  final String uId;
+class PickProfileImageEvent extends AuthEvent {
+  final ImageSource source;
 
-  const CreateUserEvent(this.userName, this.email, this.password, this.uId);
+  const PickProfileImageEvent(this.source);
 
   @override
-  List<Object?> get props => [userName, email, password];
+  List<Object?> get props => [source];
 }

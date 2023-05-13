@@ -1,24 +1,27 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:bloc/bloc.dart';
 import 'package:social_app_tdd/core/strings/id_and_token.dart';
+import 'package:social_app_tdd/features/auth/domain/usecases/pick_profile_image_usecase.dart';
 
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/strings/failure.dart';
-import '../../../domain/usecases/create_user_usecase.dart';
-import '../../../domain/usecases/login.dart';
-import '../../../domain/usecases/signup.dart';
+import '../../../domain/usecases/login_usecase.dart';
+import '../../../domain/usecases/signup_usecase.dart';
 import 'auth_event.dart';
 import 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
   final LoginUseCase loginUseCase;
   final SignupUseCase signupUseCase;
-  final CreateUserUseCase createUserUseCase;
+  final PickProfileImageUseCase pickProfileImageUseCase;
 
-  AuthBloc(
-      {required this.signupUseCase,
-      required this.loginUseCase,
-      required this.createUserUseCase})
-      : super(AuthInitial()) {
+  AuthBloc({
+    required this.signupUseCase,
+    required this.loginUseCase,
+    required this.pickProfileImageUseCase,
+  }) : super(AuthInitial()) {
     on<AuthEvent>((event, emit) async {
       if (event is LoginEvent) {
         emit(LoadingLoginState());
@@ -30,22 +33,20 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         });
       } else if (event is SignupEvent) {
         emit(LoadingLoginState());
-        final signup =
-            await signupUseCase(event.userName, event.email, event.password);
+        final signup = await signupUseCase(
+            event.userName, event.email, event.password, event.profileImage);
         signup.fold((failure) {
           emit(ErrorSignupState(_mapFailureToString(failure)));
         }, (_) {
           emit(SuccessSignupState("Signup Successfully", event.userName,
-              event.email, event.password, userId!));
+              event.profileImage, event.email, event.password, userId!));
         });
-      } else if (event is CreateUserEvent) {
-        emit(LoadingLoginState());
-        final createUser = await createUserUseCase(
-            event.userName, event.email, event.password, event.uId);
-        createUser.fold((failure) {
-          emit(ErrorCreateUserState(_mapFailureToString(failure)));
-        }, (_) {
-          emit(const SuccessCreateUserState("Create Account Successfully"));
+      } else if (event is PickProfileImageEvent) {
+        final image = await pickProfileImageUseCase(event.source);
+        image.fold((l) {
+          emit(const ErrorPickImageState());
+        }, (success) {
+          emit(SuccessPickImageState(File(success.path)));
         });
       }
     });

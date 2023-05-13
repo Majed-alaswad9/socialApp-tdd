@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:equatable/equatable.dart';
 
 abstract class AuthState extends Equatable {
@@ -32,12 +34,13 @@ class ErrorLoginState extends AuthState {
 class SuccessSignupState extends AuthState {
   final String message;
   final String userName;
+  File? profileImage;
   final String email;
   final String password;
   final String uId;
 
-  const SuccessSignupState(
-      this.message, this.userName, this.email, this.password, this.uId);
+  SuccessSignupState(this.message, this.userName, this.profileImage, this.email,
+      this.password, this.uId);
 
   @override
   List<Object?> get props => [message];
@@ -68,4 +71,13 @@ class ErrorCreateUserState extends AuthState {
 
   @override
   List<Object?> get props => [error];
+}
+
+class SuccessPickImageState extends AuthState {
+  final File image;
+  const SuccessPickImageState(this.image);
+}
+
+class ErrorPickImageState extends AuthState {
+  const ErrorPickImageState();
 }

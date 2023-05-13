@@ -6,6 +6,7 @@ Color secondaryColor = const Color(0xFF072E33);
 
 //light theme
 final lightTheme = ThemeData(
+    useMaterial3: true,
     textTheme: TextTheme(
         bodyLarge: const TextStyle(
             color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
@@ -35,6 +36,7 @@ final lightTheme = ThemeData(
 
 // dark theme
 final darkTheme = ThemeData(
+    useMaterial3: true,
     bottomSheetTheme:
         const BottomSheetThemeData(backgroundColor: Color(0xFF242F3D)),
     dialogTheme: const DialogTheme(backgroundColor: Color(0xFF242F3D)),

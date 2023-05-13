@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_app_tdd/features/auth/presentation/widget/text_form.dart';
 
 import '../../../../core/theme.dart';
@@ -55,6 +56,15 @@ class SignupFormWidget extends StatelessWidget {
           const SizedBox(
             height: 20,
           ),
+          Expanded(
+              child: MaterialButton(
+            onPressed: () {
+              BlocProvider.of<AuthBloc>(context)
+                  .add(const PickProfileImageEvent(ImageSource.gallery));
+            },
+            color: primaryColor,
+            child: const Text('Gallery', style: TextStyle(color: Colors.white)),
+          )),
           Container(
             width: double.infinity,
             color: primaryColor,
@@ -64,7 +74,9 @@ class SignupFormWidget extends StatelessWidget {
                   BlocProvider.of<AuthBloc>(context).add(SignupEvent(
                       nameController.text,
                       emailController.text,
-                      passWordController.text));
+                      passWordController.text,
+                      null
+                  ));
                 }
               },
               child: const Text(

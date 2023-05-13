@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app_tdd/features/posts/presentation/widgets/build_add_post_widget.dart';
@@ -15,14 +17,6 @@ class AddPostPage extends StatelessWidget {
 
   AppBar _buildAppBar() => AppBar(
         title: const Text('New Post'),
-        actions: [
-          TextButton(
-              onPressed: () {},
-              child: const Text(
-                'Post',
-                style: TextStyle(fontSize: 17, color: Colors.white),
-              ))
-        ],
       );
 
   Widget _buildBody() {
