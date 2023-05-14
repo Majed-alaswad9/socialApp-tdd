@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:social_app_tdd/core/util/snackbar_message.dart';
-import 'package:social_app_tdd/features/posts/presentation/widgets/elevated_button_widget.dart';
 
 import '../../../../core/theme.dart';
 import '../../../../core/widget/build_popup_menu_button_widget.dart';
+import '../../../../core/widget/elevated_button_widget.dart';
 
 class BuildFeedPageWidget extends StatelessWidget {
   const BuildFeedPageWidget({Key? key}) : super(key: key);

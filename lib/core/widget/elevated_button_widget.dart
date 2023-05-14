@@ -15,8 +15,8 @@ class ElevatedButtonWidget extends StatelessWidget {
     return ElevatedButton(
         style: ButtonStyle(
             backgroundColor: MaterialStateColor.resolveWith((states) {
-          if (states.isEmpty) return primaryColor;
-          return secondaryColor;
+          if (states.isEmpty) return Colors.white;
+          return primaryColor;
         })),
         onPressed: onPress,
         child: Row(
@@ -24,10 +24,7 @@ class ElevatedButtonWidget extends StatelessWidget {
             Icon(
               icon,
               size: 20,
-              //  color:
-              // PurpleBookCubit.get(contexts).isLikePost![index]
-              //     ? const Color(0xFF6823D0)
-              //     : Colors.grey,
+              color:Colors.grey,
             ),
             const SizedBox(
               width: 5,
@@ -35,10 +32,7 @@ class ElevatedButtonWidget extends StatelessWidget {
             Text(txt,
                 style: const TextStyle(
                   fontSize: 15,
-                  // color: PurpleBookCubit.get(contexts)
-                  //         .isLikePost![index]
-                  //     ? const Color(0xFF6823D0)
-                  //     : Colors.grey,
+                  color: Colors.grey,
                 ))
           ],
         ));

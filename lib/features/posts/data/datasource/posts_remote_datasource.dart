@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import '../../../../core/errors/exceptions.dart';
-import '../model/get_post_model.dart';
+import '../model/post_model.dart';
 
 abstract class PostRemoteDataSource {
   Future<List<PostModel>> getAllPosts();
@@ -82,9 +82,9 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   Future<List<PostModel>> getAllPosts() async {
     List<PostModel> postModel = [];
     FirebaseFirestore.instance.collection('posts').get().then((value) {
-      value.docs.forEach((element) {
+      for (var element in value.docs) {
         postModel.add(PostModel.fromJson(element.data()));
-      });
+      }
     }).catchError((_) {});
     throw ServerException();
   }

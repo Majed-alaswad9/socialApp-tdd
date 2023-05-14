@@ -1,9 +1,8 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:dartz/dartz_streaming.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_app_tdd/features/posts/data/model/get_post_model.dart';
+import 'package:social_app_tdd/features/posts/data/model/post_model.dart';
 
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
@@ -70,7 +69,7 @@ class PostsRepositoryImpl implements PostRepository {
     if (await networkInfo.isConnected) {
       try {
         final remoterPosts = await postRemoteDataSource.getAllPosts();
-        postsLocalDataSource.cachePosts(remoterPosts);
+        await postsLocalDataSource.cachePosts(remoterPosts);
         return Right(remoterPosts);
       } on ServerException {
         return Left(ServerFailure());

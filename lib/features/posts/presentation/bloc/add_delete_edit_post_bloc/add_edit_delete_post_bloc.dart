@@ -59,7 +59,12 @@ class AddDeleteEditPostBloc
           emit(SuccessPickImageState(File(success.path)));
         });
       } else if (event is GetLocalUserInformation) {
-         (nameUser,imageUser)=await getUserInfoUseCase();
+         final successOrFailure=await getUserInfoUseCase();
+         successOrFailure.fold((failure) {
+           emit(ErrorGetInfoUserState(_mapFailureToMessage(failure)));
+         }, (r) {
+           emit(SuccessGetInfoUSerState(userName: r.$1.toString(),userImage: r.$2.toString()));
+         });
       }
     });
   }

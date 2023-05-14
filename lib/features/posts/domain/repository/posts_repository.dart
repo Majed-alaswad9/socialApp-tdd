@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dartz/dartz.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:social_app_tdd/features/posts/data/model/get_post_model.dart';
+import 'package:social_app_tdd/features/posts/data/model/post_model.dart';
 
 import '../../../../core/errors/failures.dart';
 

@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:equatable/equatable.dart';
 
 abstract class AddDeleteEditPostState {
   const AddDeleteEditPostState();
@@ -36,4 +35,10 @@ class SuccessGetInfoUSerState extends AddDeleteEditPostState {
   String? userImage;
 
   SuccessGetInfoUSerState({required this.userName, this.userImage});
+}
+
+class ErrorGetInfoUserState extends AddDeleteEditPostState{
+  final String error;
+
+  ErrorGetInfoUserState(this.error);
 }

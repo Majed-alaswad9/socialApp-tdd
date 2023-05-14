@@ -4,7 +4,7 @@ import 'package:dartz/dartz.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/exceptions.dart';
-import '../model/get_post_model.dart';
+import '../model/post_model.dart';
 
 abstract class PostsLocalDataSource {
   Future<List<PostModel>> getLocalPosts();

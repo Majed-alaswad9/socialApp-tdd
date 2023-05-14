@@ -1,5 +1,5 @@
 import 'package:dartz/dartz.dart';
-import 'package:social_app_tdd/features/posts/data/model/get_post_model.dart';
+import 'package:social_app_tdd/features/posts/data/model/post_model.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../repository/posts_repository.dart';
