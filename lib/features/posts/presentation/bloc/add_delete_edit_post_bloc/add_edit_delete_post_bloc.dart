@@ -20,14 +20,12 @@ class AddDeleteEditPostBloc
   final DeletePostUseCase deletePostUseCase;
   final EditPostUseCase editPostUseCase;
   final PickImageUseCase pickImageUseCase;
-  final GetUserInfoUseCase getUserInfoUseCase;
 
   AddDeleteEditPostBloc({
     required this.addPostUseCase,
     required this.deletePostUseCase,
     required this.editPostUseCase,
     required this.pickImageUseCase,
-    required this.getUserInfoUseCase,
   }) : super(AddDeleteEditPostInitial()) {
     on<AddDeleteEditPostEvent>((event, emit) async {
       if (event is AddPostEvent) {
@@ -58,13 +56,6 @@ class AddDeleteEditPostBloc
         }, (success) {
           emit(SuccessPickImageState(File(success.path)));
         });
-      } else if (event is GetLocalUserInformation) {
-         final successOrFailure=await getUserInfoUseCase();
-         successOrFailure.fold((failure) {
-           emit(ErrorGetInfoUserState(_mapFailureToMessage(failure)));
-         }, (r) {
-           emit(SuccessGetInfoUSerState(userName: r.$1.toString(),userImage: r.$2.toString()));
-         });
       }
     });
   }

@@ -6,15 +6,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_app_tdd/core/errors/exceptions.dart';
 import 'package:social_app_tdd/core/strings/id_and_token.dart';
-import 'package:social_app_tdd/features/auth/data/model/user_model.dart';
+import 'package:social_app_tdd/features/posts/data/model/user_model.dart';
 
 abstract class AuthRemoteDataSource {
   Future<Unit> login(String email, String password);
 
   Future<Unit> signup(
       String userName, String email, String password, File? profileImage);
-
-  Future<UserModel> getUserProfile();
 
   Future<Unit> createUser(
       String userName, String email, String uId, File? profileImage);
@@ -40,7 +38,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
     await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) async {
-      userName = userName;
       await createUser(userName, email, value.user!.uid, profileImage);
       return Future.value(unit);
     }).catchError((error) {
@@ -61,7 +58,6 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         value.ref.getDownloadURL().then((value) {
           final userModel = UserModel(
               uId: uId, userName: userName, email: email, profileImage: value);
-          userImage = value;
           FirebaseFirestore.instance
               .collection('users')
               .doc(uId)
@@ -90,20 +86,5 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
       });
     }
     return Future.value(unit);
-  }
-
-  @override
-  Future<UserModel> getUserProfile() async {
-    FirebaseFirestore.instance
-        .collection('users')
-        .doc(userId)
-        .get()
-        .then((value) {
-      final userModel = UserModel.fromJson(value.data()!);
-      return userModel;
-    }).catchError((_) {
-      throw ServerException();
-    });
-    throw UnimplementedError();
   }
 }

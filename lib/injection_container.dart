@@ -12,6 +12,7 @@ import 'package:social_app_tdd/features/posts/domain/usecases/get_post_usecase.d
 import 'package:social_app_tdd/features/posts/domain/usecases/get_user_info_usecase.dart';
 import 'package:social_app_tdd/features/posts/domain/usecases/pick_image_usecase.dart';
 import 'package:social_app_tdd/features/posts/presentation/bloc/add_delete_edit_post_bloc/add_edit_delete_post_bloc.dart';
+import 'package:social_app_tdd/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
 
 import 'core/network_info.dart';
 import 'features/auth/data/datasources/auth_local_datasources.dart';
@@ -34,10 +35,11 @@ Future<void> init() async {
       signupUseCase: sl(), loginUseCase: sl(), pickProfileImageUseCase: sl()));
   sl.registerFactory(() => AddDeleteEditPostBloc(
       pickImageUseCase: sl(),
-      getUserInfoUseCase: sl(),
       addPostUseCase: sl(),
       deletePostUseCase: sl(),
       editPostUseCase: sl()));
+  sl.registerFactory(
+      () => PostsBloc(getUserInfoUseCase: sl(), getAllPostsUseCase: sl()));
 
   //* UseCases
 
@@ -66,7 +68,7 @@ Future<void> init() async {
   sl.registerLazySingleton<PostRepository>(
       () => PostsRepositoryImpl(sl(), sl(), sl()));
 
-  //*Datasources
+  //*Datasource
 
   //Auth DataSource
   sl.registerLazySingleton<AuthRemoteDataSource>(

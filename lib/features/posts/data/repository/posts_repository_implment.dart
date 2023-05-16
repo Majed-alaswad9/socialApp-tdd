@@ -10,6 +10,7 @@ import '../../../../core/network_info.dart';
 import '../../domain/repository/posts_repository.dart';
 import '../datasource/posts_local_datasource.dart';
 import '../datasource/posts_remote_datasource.dart';
+import '../model/user_model.dart';
 
 class PostsRepositoryImpl implements PostRepository {
   final PostRemoteDataSource postRemoteDataSource;
@@ -68,14 +69,19 @@ class PostsRepositoryImpl implements PostRepository {
   Future<Either<Failure, List<PostModel>>> getAllPosts() async {
     if (await networkInfo.isConnected) {
       try {
-        final remoterPosts = await postRemoteDataSource.getAllPosts();
-        await postsLocalDataSource.cachePosts(remoterPosts);
-        return Right(remoterPosts);
+        final remotePosts = await postRemoteDataSource.getAllPosts();
+        await postsLocalDataSource.cachePosts(remotePosts);
+        return Right(remotePosts);
       } on ServerException {
         return Left(ServerFailure());
       }
     } else {
-      return Left(OfflineFailure());
+      try {
+        final cachePosts = await postsLocalDataSource.getLocalPosts();
+        return Right(cachePosts);
+      } on EmptyCacheException {
+        return Left(EmptyCacheFailure());
+      }
     }
   }
 
@@ -90,14 +96,16 @@ class PostsRepositoryImpl implements PostRepository {
   }
 
   @override
-  Future<Either<Failure, (String?, String?)>> getUserInformation() async {
-    try {
-      String? nameUser;
-      String? imageUser;
-      (nameUser, imageUser) = await postsLocalDataSource.getLocalUser();
-      return Right((nameUser, imageUser));
-    } on EmptyCacheException {
-      return Left(EmptyCacheFailure());
+  Future<Either<Failure, UserModel>> getUserInformation(String uId) async {
+    if (await networkInfo.isConnected) {
+      try {
+        final userModel = await postRemoteDataSource.getUserInformation(uId);
+        return Right(userModel);
+      } on ServerException {
+        return Left(ServerFailure());
+      }
+    } else {
+      return Left(OfflineFailure());
     }
   }
 }

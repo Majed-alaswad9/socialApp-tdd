@@ -4,21 +4,38 @@ class PostModel {
   final String userName;
   String? userImage;
   final String content;
-  final DateTime date;
-  String? image;
+  final String createAt;
+  String? postImage;
+  final bool isLike;
+  final int likesCount;
 
-  PostModel(this.postId, this.content, this.date, this.image, this.userId,
-      this.userName, this.userImage);
+  PostModel(this.postId, this.content, this.createAt, this.postImage,
+      this.userId, this.userName, this.userImage, this.isLike, this.likesCount);
 
-  factory PostModel.fromJson(Map<String, dynamic> json) {
+  factory PostModel.fromJson(Map<String, dynamic> json, String postId,bool isLike,int likesCount) {
     return PostModel(
-        json['uId'],
+        postId,
+        json['content'],
+        json['createAt'],
+        json['postImage'],
         json['userId'],
         json['userName'],
-        json['userImage'] ?? '',
+        json['userImage'],
+        isLike,
+        likesCount);
+  }
+
+  factory PostModel.fromLocalJson(Map<dynamic, dynamic> json) {
+    return PostModel(
+        json['postId'],
         json['content'],
-        json['date'],
-        json['image'] ?? '');
+        json['createdAt'],
+        json['postImage'],
+        json['userId'],
+        json['userName'],
+        json['userImage'],
+        json['isLike'],
+        json['likesCount']);
   }
 
   Map<String, dynamic> toJson() {
@@ -28,8 +45,10 @@ class PostModel {
       'userName': userName,
       'userImage': userImage,
       'content': content,
-      'date': date,
-      'image': image,
+      'createdAt': createAt,
+      'postImage': postImage,
+      'isLike':isLike,
+      'likesCount':likesCount
     };
   }
 }

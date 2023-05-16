@@ -4,8 +4,9 @@ import '../../../../core/theme.dart';
 
 class ElevatedButtonWidget extends StatelessWidget {
   const ElevatedButtonWidget(
-      {Key? key, required this.onPress, required this.txt, required this.icon})
+      {Key? key, required this.onPress, required this.txt, required this.icon, required this.isLike})
       : super(key: key);
+  final bool isLike;
   final void Function() onPress;
   final String txt;
   final IconData icon;
@@ -15,8 +16,9 @@ class ElevatedButtonWidget extends StatelessWidget {
     return ElevatedButton(
         style: ButtonStyle(
             backgroundColor: MaterialStateColor.resolveWith((states) {
-          if (states.isEmpty) return Colors.white;
-          return primaryColor;
+          if (states.isEmpty) return Colors.grey;
+          if(isLike)return primaryColor;
+          return secondaryColor;
         })),
         onPressed: onPress,
         child: Row(
@@ -24,7 +26,7 @@ class ElevatedButtonWidget extends StatelessWidget {
             Icon(
               icon,
               size: 20,
-              color:Colors.grey,
+              color:Colors.white,
             ),
             const SizedBox(
               width: 5,
@@ -32,7 +34,7 @@ class ElevatedButtonWidget extends StatelessWidget {
             Text(txt,
                 style: const TextStyle(
                   fontSize: 15,
-                  color: Colors.grey,
+                  color: Colors.white,
                 ))
           ],
         ));

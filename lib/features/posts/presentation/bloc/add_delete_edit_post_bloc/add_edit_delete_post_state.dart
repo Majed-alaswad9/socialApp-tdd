@@ -29,16 +29,3 @@ class SuccessPickImageState extends AddDeleteEditPostState {
 class ErrorPickImageState extends AddDeleteEditPostState {
   const ErrorPickImageState();
 }
-
-class SuccessGetInfoUSerState extends AddDeleteEditPostState {
-  final String userName;
-  String? userImage;
-
-  SuccessGetInfoUSerState({required this.userName, this.userImage});
-}
-
-class ErrorGetInfoUserState extends AddDeleteEditPostState{
-  final String error;
-
-  ErrorGetInfoUserState(this.error);
-}

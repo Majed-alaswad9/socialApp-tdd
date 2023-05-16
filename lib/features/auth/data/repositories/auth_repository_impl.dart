@@ -25,9 +25,8 @@ class AuthRepositoryImpl implements AuthRepository {
     if (await networkInfo.isConnected) {
       try {
         await authRemoteDataSource.login(email, password);
-        final userModel = await authRemoteDataSource.getUserProfile();
-        await authLocalDataSource.cacheLogin(
-            userName: userModel.userName, userImage: userModel.profileImage);
+        await authLocalDataSource.cacheLogin(uId: userId!);
+        print("Cached UserId ${userId}");
         return const Right(unit);
       } on ServerException {
         return Left(ServerFailure());

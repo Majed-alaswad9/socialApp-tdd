@@ -23,7 +23,7 @@ class LoginPage extends StatelessWidget {
   AppBar _buildAppBar() {
     return AppBar(
       backgroundColor: primaryColor,
-      title: const Text('PurpleBook'),
+      title: const Text('Social App',),
     );
   }
 

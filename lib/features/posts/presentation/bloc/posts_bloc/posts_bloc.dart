@@ -4,19 +4,30 @@ import 'package:social_app_tdd/features/posts/presentation/bloc/posts_bloc/posts
 
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/strings/failure.dart';
+import '../../../../../core/strings/id_and_token.dart';
 import '../../../domain/usecases/get_post_usecase.dart';
+import '../../../domain/usecases/get_user_info_usecase.dart';
 
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final GetAllPostsUseCase getAllPostsUseCase;
+  final GetUserInfoUseCase getUserInfoUseCase;
 
-  PostsBloc({required this.getAllPostsUseCase}) : super(PostInitial()){
+  PostsBloc({required this.getUserInfoUseCase, required this.getAllPostsUseCase}) : super(PostInitial()){
     on(<PostsEvent>(event, emit) async{
       if(event is GetPostsEvent){
+        emit(LoadingGetPostsState());
         final successOrFailure=await getAllPostsUseCase();
         successOrFailure.fold((l) {
           emit(ErrorGetPostsState(_mapFailureToMessage(l)));
         }, (r) {
           emit(SuccessGetPostsState(r));
+        });
+      }else if(event is GetUserInformationEvent){
+        final successOrFailure=await getUserInfoUseCase(userId!);
+        successOrFailure.fold((l) {
+          emit(ErrorGetUserInformationState(_mapFailureToMessage(l)));
+        }, (r) {
+          emit(SuccessGetUserInformationState(r));
         });
       }
     });
