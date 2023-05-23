@@ -17,19 +17,19 @@ import '../bloc/posts_bloc/posts_state.dart';
 
 class BuildFeedPageWidget extends StatelessWidget {
   BuildFeedPageWidget({Key? key}) : super(key: key);
-  List<PostModel> postModel=[];
+  List<PostModel> postModel = [];
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (_) => di.sl<PostsBloc>()
-      ..add(GetUserInformationEvent())
+        ..add(GetUserInformationEvent())
         ..add(GetPostsEvent()),
       child: BlocConsumer<PostsBloc, PostsState>(
         listener: (context, state) {
-          if(state is SuccessGetPostsState){
-            postModel=state.postModel;
-          }else if (state is ErrorGetPostsState) {
+          if (state is SuccessGetPostsState) {
+            postModel = state.postModel;
+          } else if (state is ErrorGetPostsState) {
             SnackBarMessage().snackBarMessageError(context, state.error);
           }
           if (state is SuccessGetUserInformationState) {
@@ -45,10 +45,8 @@ class BuildFeedPageWidget extends StatelessWidget {
           }
           return RefreshIndicator(
               color: primaryColor,
-                onRefresh: () => _onRefresh(context),
-                child: buildListViewPosts(postModel!));
-
-
+              onRefresh: () => _onRefresh(context),
+              child: buildListViewPosts(postModel!));
         },
       ),
     );
@@ -59,7 +57,7 @@ class BuildFeedPageWidget extends StatelessWidget {
         itemCount: postModel.length,
         itemBuilder: (context, index) => ConditionalBuilder(
           condition: postModel.isNotEmpty,
-          builder:(context)=> Padding(
+          builder: (context) => Padding(
             padding: const EdgeInsets.all(5.0),
             child: Card(
               color: Colors.white,
@@ -110,27 +108,27 @@ class BuildFeedPageWidget extends StatelessWidget {
                       postModel[index].content,
                       style: Theme.of(context).textTheme.headlineSmall,
                     ),
-                    if(postModel[index].postImage!.isNotEmpty)
-                    InkWell(
-                      onTap: () {
-                        // navigatorPush(
-                        //     context: contexts,
-                        //     widget: ViewStringImage(
-                        //         image: feed.posts![index].image!.data!));
-                      },
-                      child: Container(
-                        width: double.infinity,
-                        height: 250,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            image: DecorationImage(
-                              fit: BoxFit.contain,
-                              image: CachedNetworkImageProvider(
-                                postModel[index].postImage!,
-                              ),
-                            )),
+                    if (postModel[index].postImage!.isNotEmpty)
+                      InkWell(
+                        onTap: () {
+                          // navigatorPush(
+                          //     context: contexts,
+                          //     widget: ViewStringImage(
+                          //         image: feed.posts![index].image!.data!));
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          height: 250,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(5),
+                              image: DecorationImage(
+                                fit: BoxFit.contain,
+                                image: CachedNetworkImageProvider(
+                                  postModel[index].postImage!,
+                                ),
+                              )),
+                        ),
                       ),
-                    ),
                     Padding(
                       padding: const EdgeInsets.symmetric(vertical: 5.0),
                       child: Row(
@@ -149,7 +147,8 @@ class BuildFeedPageWidget extends StatelessWidget {
                                   style: Theme.of(context)
                                       .textTheme
                                       .bodySmall!
-                                      .copyWith(color: Colors.grey, fontSize: 15),
+                                      .copyWith(
+                                          color: Colors.grey, fontSize: 15),
                                 ),
                               ),
                             ),
@@ -178,7 +177,8 @@ class BuildFeedPageWidget extends StatelessWidget {
                                             .textTheme
                                             .bodySmall!
                                             .copyWith(
-                                                color: Colors.grey, fontSize: 17),
+                                                color: Colors.grey,
+                                                fontSize: 17),
                                       )
                                     ],
                                   ),
@@ -191,25 +191,48 @@ class BuildFeedPageWidget extends StatelessWidget {
                     ),
                     const Divider(
                       color: Colors.grey,
-                      thickness: 2,
+                      thickness: 1,
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        ElevatedButtonWidget(
-                            isLike: false,
-                            onPress: () {},
-                            txt: 'Chat',
-                            icon: Icons.mark_unread_chat_alt_outlined),
-                        ElevatedButtonWidget(
-                            isLike: false,
-                            onPress: () {}, txt: 'Comment', icon: Icons.comment),
-                        ElevatedButtonWidget(
-                            isLike: false,
-                            onPress: () {},
-                            txt: 'Like',
-                            icon: Icons.thumb_up_alt_rounded),
+                        MaterialButton(
+                          onPressed: () {},
+                          child: Row(
+                            children: [
+                              Text('Chat'),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(Icons.mark_unread_chat_alt_outlined)
+                            ],
+                          ),
+                        ),
+                        MaterialButton(
+                          onPressed: () {},
+                          child: Row(
+                            children: [
+                              Text('Comment'),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(Icons.comment)
+                            ],
+                          ),
+                        ),
+                        MaterialButton(
+                          onPressed: () {},
+                          child: Row(
+                            children: [
+                              Text('Like'),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Icon(Icons.thumb_up_alt_rounded)
+                            ],
+                          ),
+                        ),
                       ],
                     )
                   ],
@@ -217,7 +240,9 @@ class BuildFeedPageWidget extends StatelessWidget {
               ),
             ),
           ),
-          fallback: (context)=>Center(child: Text("No Posts Yet"),),
+          fallback: (context) => Center(
+            child: Text("No Posts Yet"),
+          ),
         ),
         separatorBuilder: (BuildContext context, int index) => const SizedBox(
           height: 10,

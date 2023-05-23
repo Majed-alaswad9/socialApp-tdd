@@ -5,9 +5,12 @@ import 'package:social_app_tdd/features/auth/domain/usecases/pick_profile_image_
 import 'package:social_app_tdd/features/posts/data/datasource/posts_local_datasource.dart';
 import 'package:social_app_tdd/features/posts/data/datasource/posts_remote_datasource.dart';
 import 'package:social_app_tdd/features/posts/data/repository/posts_repository_implment.dart';
+import 'package:social_app_tdd/features/posts/domain/usecases/add_like_usecase.dart';
 import 'package:social_app_tdd/features/posts/domain/usecases/add_post_usecase.dart';
+import 'package:social_app_tdd/features/posts/domain/usecases/delete_like_usecase.dart';
 import 'package:social_app_tdd/features/posts/domain/usecases/delete_post_usecase.dart';
 import 'package:social_app_tdd/features/posts/domain/usecases/edit_post_usecase.dart';
+import 'package:social_app_tdd/features/posts/domain/usecases/get_likes_usecase.dart';
 import 'package:social_app_tdd/features/posts/domain/usecases/get_post_usecase.dart';
 import 'package:social_app_tdd/features/posts/domain/usecases/get_user_info_usecase.dart';
 import 'package:social_app_tdd/features/posts/domain/usecases/pick_image_usecase.dart';
@@ -38,8 +41,12 @@ Future<void> init() async {
       addPostUseCase: sl(),
       deletePostUseCase: sl(),
       editPostUseCase: sl()));
-  sl.registerFactory(
-      () => PostsBloc(getUserInfoUseCase: sl(), getAllPostsUseCase: sl()));
+  sl.registerFactory(() => PostsBloc(
+      getUserInfoUseCase: sl(),
+      getAllPostsUseCase: sl(),
+      addLikeUseCase: sl(),
+      deleteLikeUseCase: sl(),
+      getLikesUseCase: sl()));
 
   //* UseCases
 
@@ -55,6 +62,9 @@ Future<void> init() async {
   sl.registerLazySingleton(() => DeletePostUseCase(sl()));
   sl.registerLazySingleton(() => PickImageUseCase(sl()));
   sl.registerLazySingleton(() => GetUserInfoUseCase(sl()));
+  sl.registerLazySingleton(() => GetLikesUseCase(sl()));
+  sl.registerLazySingleton(() => AddLikeUseCase(sl()));
+  sl.registerLazySingleton(() => DeleteLikeUseCase(sl()));
 
   //*Repositories
 

@@ -7,17 +7,6 @@ class AddPostPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: _buildAppBar(),
-      body: _buildBody(),
-    );
-  }
-
-  AppBar _buildAppBar() => AppBar(
-        title: const Text('New Post'),
-      );
-
-  Widget _buildBody() {
     return AddPostWidget();
   }
 }

@@ -10,6 +10,12 @@ import '../../../../core/errors/failures.dart';
 abstract class PostRepository {
   Future<Either<Failure, List<PostModel>>> getAllPosts();
 
+  Future<Either<Failure,Unit>> addLike(String postId);
+
+  Future<Either<Failure,Unit>> deleteLike(String postId);
+
+  Future<Either<Failure,List<UserModel>>> getLikes(String postId);
+
   Future<Either<Failure,UserModel>> getUserInformation(String uId);
 
   Future<Either<Failure, Unit>> addPost(String userId, String userName,

@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:social_app_tdd/core/strings/id_and_token.dart';
 import 'package:social_app_tdd/features/posts/data/model/user_model.dart';
@@ -13,6 +14,12 @@ abstract class PostRemoteDataSource {
 
   Future<Unit> addPost(String userId, String userName, String userImage,
       String content, String date, File? image);
+
+  Future<Unit> addLike(String postId);
+
+  Future<Unit> deleteLike(String postId);
+
+  Future<List<UserModel>> getLikes(String postId);
 
   Future<Unit> deletePost(String id);
 
@@ -85,13 +92,17 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   @override
   Future<List<PostModel>> getAllPosts() async {
     List<PostModel> postModel = [];
-    await FirebaseFirestore.instance.collection('posts').get().then((value) async{
-
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .get()
+        .then((value) async {
       for (var element in value.docs) {
-        final isLike=await element.reference.collection('likes').doc(userId).get();
-        await element.reference.collection('likes').get().then((value){
-          postModel.add(PostModel.fromJson(element.data(),element.id,isLike.exists,value.docs.length));
-        }).catchError((_){
+        final isLike =
+            await element.reference.collection('likes').doc(userId).get();
+        await element.reference.collection('likes').get().then((value) {
+          postModel.add(PostModel.fromJson(
+              element.data(), element.id, isLike.exists, value.docs.length));
+        }).catchError((_) {
           throw ServerException();
         });
       }
@@ -103,19 +114,77 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
   }
 
   @override
-  Future<UserModel> getUserInformation(String uId) async{
+  Future<UserModel> getUserInformation(String uId) async {
     UserModel? userModel;
     await FirebaseFirestore.instance
         .collection('users')
         .doc(uId)
         .get()
         .then((value) {
-           userModel=UserModel.fromJson(value.data()!);
-          return userModel;
-    })
-        .catchError((_) {
-          throw ServerException();
+      userModel = UserModel.fromJson(value.data()!);
+      return userModel;
+    }).catchError((_) {
+      throw ServerException();
     });
     return userModel!;
+  }
+
+  @override
+  Future<Unit> addLike(String postId) async {
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(userId)
+        .set({'like': true}).then((value) {
+      return Future.value(unit);
+    }).catchError((_) {
+      throw ServerException();
+    });
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<Unit> deleteLike(String postId) async {
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(userId)
+        .delete()
+        .then((value) {
+      return Future.value(unit);
+    }).catchError((_) {
+      throw ServerException();
+    });
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<List<UserModel>> getLikes(String postId) async {
+    List<UserModel> userModel = [];
+    await FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .get()
+        .then((value)async {
+      for (var element in value.docs) {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(element.id)
+            .get()
+            .then((value) {
+              userModel.add(UserModel.fromJson(value.data()!));
+        })
+            .catchError((_) {
+              throw ServerException();
+        });
+      }
+      return userModel;
+    }).catchError((_) {
+      throw ServerException();
+    });
+    throw UnimplementedError();
   }
 }

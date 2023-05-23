@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -25,6 +24,28 @@ class AddPostWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height - 95;
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: _buildBody(height),
+    );
+  }
+  AppBar _buildAppBar(context) => AppBar(
+    title: const Text('New Post'),
+    actions: [
+      TextButton(onPressed: (){
+        BlocProvider.of<AddDeleteEditPostBloc>(context)
+            .add(AddPostEvent(
+            userId: userId!,
+            userName: userName!,
+            userImage: userImage!,
+            date: DateTime.now().toString(),
+            content: contentController.text,
+            image: postImage));
+      }, child: const Text('Post'))
+    ],
+  );
+
+  Widget _buildBody(double height) {
     return BlocProvider(
         create: (_) => di.sl<AddDeleteEditPostBloc>(),
         child: BlocConsumer<AddDeleteEditPostBloc, AddDeleteEditPostState>(
@@ -34,7 +55,7 @@ class AddPostWidget extends StatelessWidget {
               Navigator.pushAndRemoveUntil(
                   context,
                   MaterialPageRoute(builder: (_) => const FeedPage()),
-                  (route) => false);
+                      (route) => false);
             }else if(state is ErrorAddDeleteEditPostState){
               SnackBarMessage().snackBarMessageSuccess(context, state.message);
             }
@@ -89,7 +110,7 @@ class AddPostWidget extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: ElevatedButtonWidget(
-                          isLike: false,
+                            isLike: false,
                             onPress: () {
                               BlocProvider.of<AddDeleteEditPostBloc>(context)
                                   .add(AddPostEvent(

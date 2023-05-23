@@ -32,3 +32,31 @@ class ErrorGetUserInformationState extends PostsState{
 
   ErrorGetUserInformationState(this.error);
 }
+
+class SuccessAddLikeState extends PostsState{
+  SuccessAddLikeState();
+}
+
+class ErrorAddLikeState extends PostsState{
+  final String error;
+
+  ErrorAddLikeState(this.error);
+}class SuccessDeleteLikeState extends PostsState{
+  SuccessDeleteLikeState();
+}
+
+class ErrorDeleteLikeState extends PostsState{
+  final String error;
+
+  ErrorDeleteLikeState(this.error);
+}
+
+class SuccessGetLikesState extends PostsState{
+  SuccessGetLikesState();
+}
+
+class ErrorGetLikesState extends PostsState{
+  final String error;
+
+  ErrorGetLikesState(this.error);
+}

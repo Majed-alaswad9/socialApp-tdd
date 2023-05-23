@@ -108,4 +108,47 @@ class PostsRepositoryImpl implements PostRepository {
       return Left(OfflineFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, Unit>> addLike(String postId) async{
+    if(await networkInfo.isConnected){
+      try{
+        await postRemoteDataSource.addLike(postId);
+        return const Right(unit);
+      }on ServerException{
+        return Left(ServerFailure());
+      }
+    }else{
+      return Left(OfflineFailure());
+    }
+
+  }
+
+  @override
+  Future<Either<Failure, Unit>> deleteLike(String postId) async{
+    if(await networkInfo.isConnected){
+      try{
+        await postRemoteDataSource.deleteLike(postId);
+        return const Right(unit);
+      }on ServerException{
+        return Left(ServerFailure());
+      }
+    }else{
+      return Left(OfflineFailure());
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<UserModel>>> getLikes(String postId) async{
+    if(await networkInfo.isConnected){
+      try{
+        final userModel=await postRemoteDataSource.getLikes(postId);
+        return Right(userModel);
+      }on ServerException{
+        return Left(ServerFailure());
+      }
+    }else{
+      return Left(OfflineFailure());
+    }
+  }
 }

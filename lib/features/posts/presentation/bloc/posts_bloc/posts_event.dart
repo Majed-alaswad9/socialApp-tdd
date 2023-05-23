@@ -12,7 +12,9 @@ class GetUserInformationEvent extends PostsEvent{
 }
 
 class AddLikeEvent extends PostsEvent{
+  final String postId;
 
+  AddLikeEvent(this.postId);
 }
 
 class GetLikesEvent extends PostsEvent{
