@@ -33,14 +33,8 @@ class ErrorLoginState extends AuthState {
 
 class SuccessSignupState extends AuthState {
   final String message;
-  final String userName;
-  File? profileImage;
-  final String email;
-  final String password;
-  final String uId;
 
-  SuccessSignupState(this.message, this.userName, this.profileImage, this.email,
-      this.password, this.uId);
+  const SuccessSignupState(this.message);
 
   @override
   List<Object?> get props => [message];
@@ -79,5 +73,6 @@ class SuccessPickImageState extends AuthState {
 }
 
 class ErrorPickImageState extends AuthState {
-  const ErrorPickImageState();
+  final String error;
+  const ErrorPickImageState(this.error);
 }

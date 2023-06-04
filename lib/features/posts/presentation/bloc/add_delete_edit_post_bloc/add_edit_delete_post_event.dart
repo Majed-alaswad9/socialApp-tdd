@@ -42,7 +42,3 @@ class PickImageEvent extends AddDeleteEditPostEvent {
 
   PickImageEvent(this.source);
 }
-
-class GetLocalUserInformation extends AddDeleteEditPostEvent {
-  GetLocalUserInformation();
-}

@@ -11,13 +11,13 @@ class FeedPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Feed'),
+        title: const Text('Feed'),
         actions: [
           TextButton(
               onPressed: () {
                 FirebaseAuth.instance.signOut();
               },
-              child: Text('Log Out'))
+              child: const Text('Log Out'))
         ],
       ),
       body: _buildBody(),
@@ -33,6 +33,6 @@ class FeedPage extends StatelessWidget {
   }
 
   Widget _buildBody() {
-    return const BuildFeedPageWidget();
+    return BuildFeedPageWidget();
   }
 }

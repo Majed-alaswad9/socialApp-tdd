@@ -7,22 +7,27 @@ Color secondaryColor = const Color(0xFF072E33);
 //light theme
 final lightTheme = ThemeData(
     useMaterial3: true,
-    textTheme: TextTheme(
-        bodyLarge: const TextStyle(
+    textTheme: const TextTheme(
+        bodyLarge: TextStyle(
             color: Colors.black, fontSize: 18, fontWeight: FontWeight.bold),
-        bodyMedium: const TextStyle(
+        bodyMedium: TextStyle(
             color: Colors.black, fontSize: 25, fontWeight: FontWeight.bold),
-        headlineSmall: const TextStyle(color: Colors.black),
+        headlineSmall: TextStyle(color: Colors.black),
         bodySmall:
-            const TextStyle(color: Colors.grey, height: 1.5, fontSize: 14),
-        headlineMedium: const TextStyle(
+            TextStyle(color: Colors.grey, height: 1.5, fontSize: 14),
+        headlineMedium: TextStyle(
             color: Colors.black, fontSize: 28, fontWeight: FontWeight.bold),
-        titleMedium: const TextStyle(color: Colors.black),
-        titleSmall: TextStyle(color: Colors.grey.shade300),
+        titleMedium: TextStyle(color: Colors.black),
+        titleSmall: TextStyle(color: Colors.grey),
         titleLarge:
-            const TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+            TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
     scaffoldBackgroundColor: Colors.white,
     appBarTheme: AppBarTheme(
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.bold
+      ),
         backgroundColor: primaryColor,
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: primaryColor,

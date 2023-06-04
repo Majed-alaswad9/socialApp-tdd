@@ -19,7 +19,9 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
   @override
   Future<Unit> cachePosts(List<PostModel> posts) {
     List postModelToJson =
-        posts.map<Map<String, dynamic>>((e) => e.toJson()).toList();
+        posts.map<Map<String, dynamic>>((e) {
+          return e.toJson();
+        }).toList();
     sharedPreferences.setString("CACHE_POSTS", json.encode(postModelToJson));
     return Future.value(unit);
   }
@@ -27,10 +29,12 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
   @override
   Future<List<PostModel>> getLocalPosts() {
     final jsonString = sharedPreferences.getString("CACHE_POSTS");
-    if (jsonString != null) {
+    if (jsonString!.isNotEmpty) {
       List decodeJsonData = json.decode(jsonString);
       List<PostModel> postsModel =
-          decodeJsonData.map<PostModel>((e) => PostModel.fromJson(e)).toList();
+          decodeJsonData.map<PostModel>((e) {
+            return PostModel.fromLocalJson(e);
+          }).toList();
       return Future.value(postsModel);
     } else {
       throw EmptyCacheException();

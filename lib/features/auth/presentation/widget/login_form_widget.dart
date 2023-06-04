@@ -82,9 +82,9 @@ class LoginFormWidget extends StatelessWidget {
                     Navigator.push(context,
                         MaterialPageRoute(builder: (_) => const SignupPage()));
                   },
-                  child: const Text(
+                  child: Text(
                     'Register',
-                    style: TextStyle(fontSize: 15),
+                    style: TextStyle(fontSize: 15,color: primaryColor),
                   ),
                 )
               ],
@@ -97,7 +97,7 @@ class LoginFormWidget extends StatelessWidget {
 
   String? validateEmail(String? value) {
     if (RegExp(
-            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+            r"^[a-zA-Z0-9.a-zA-Z0-9!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
         .hasMatch(value!)) {
       return null;
     }

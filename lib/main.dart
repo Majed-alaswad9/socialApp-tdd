@@ -15,6 +15,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   Bloc.observer = MyBlocObserver();
+  final sharedPreferences=await SharedPreferences.getInstance();
+  userId=sharedPreferences.getString("UID");
   await di.init();
   runApp(const MyApp());
 }
