@@ -1,9 +1,10 @@
 import 'package:dartz/dartz.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:social_app_tdd/features/posts/data/model/user_model.dart';
+import 'package:injectable/injectable.dart';
 import '../../../../core/errors/failures.dart';
+import '../../data/model/user_model/user_model.dart';
 import '../repository/posts_repository.dart';
 
+@injectable
 class GetUserInfoUseCase {
   final PostRepository postsRepository;
 

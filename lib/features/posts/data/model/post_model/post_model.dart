@@ -12,7 +12,8 @@ class PostModel {
   PostModel(this.postId, this.content, this.createAt, this.postImage,
       this.userId, this.userName, this.userImage, this.isLike, this.likesCount);
 
-  factory PostModel.fromJson(Map<String, dynamic> json, String postId,bool isLike,int likesCount) {
+  factory PostModel.fromJson(
+      Map<String, dynamic> json, String postId, bool isLike, int likesCount) {
     return PostModel(
         postId,
         json['content'],
@@ -47,8 +48,8 @@ class PostModel {
       'content': content,
       'createdAt': createAt,
       'postImage': postImage,
-      'isLike':isLike,
-      'likesCount':likesCount
+      'isLike': isLike,
+      'likesCount': likesCount
     };
   }
 }

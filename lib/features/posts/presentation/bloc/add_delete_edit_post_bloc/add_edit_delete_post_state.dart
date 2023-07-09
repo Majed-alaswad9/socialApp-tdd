@@ -1,31 +1,16 @@
-import 'dart:io';
+part of 'add_edit_delete_post_bloc.dart';
 
-
-abstract class AddDeleteEditPostState {
-  const AddDeleteEditPostState();
-}
-
-class AddDeleteEditPostInitial extends AddDeleteEditPostState {}
-
-class LoadingAddDeleteEditPostState extends AddDeleteEditPostState {}
-
-class SuccessAddDeleteEditPostState extends AddDeleteEditPostState {
-  final String message;
-
-  const SuccessAddDeleteEditPostState({required this.message});
-}
-
-class ErrorAddDeleteEditPostState extends AddDeleteEditPostState {
-  final String message;
-
-  const ErrorAddDeleteEditPostState({required this.message});
-}
-
-class SuccessPickImageState extends AddDeleteEditPostState {
-  final File image;
-  SuccessPickImageState(this.image);
-}
-
-class ErrorPickImageState extends AddDeleteEditPostState {
-  const ErrorPickImageState();
+@freezed
+abstract class AddDeleteEditPostState with _$AddDeleteEditPostState {
+  const factory AddDeleteEditPostState.addDeleteEditPostInitial() =
+      _addDeleteEditPostInitial;
+  const factory AddDeleteEditPostState.lading() = _loading;
+  const factory AddDeleteEditPostState.successAddDeleteEditPostState(
+      String message) = _successAddDeleteEditPostState;
+  const factory AddDeleteEditPostState.errorAddDeleteEditPostState(
+      String message) = _errorAddDeleteEditPostState;
+  const factory AddDeleteEditPostState.errorPickImageState(String message) =
+      _errorPickImageState;
+  const factory AddDeleteEditPostState.successPickImageState(File image) =
+      _successPickImageState;
 }

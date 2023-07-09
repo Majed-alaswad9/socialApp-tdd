@@ -2,12 +2,12 @@ import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:injectable/injectable.dart';
 import 'package:social_app_tdd/core/strings/id_and_token.dart';
-import 'package:social_app_tdd/features/posts/data/model/user_model.dart';
 import '../../../../core/errors/exceptions.dart';
-import '../model/post_model.dart';
+import '../model/post_model/post_model.dart';
+import '../model/user_model/user_model.dart';
 
 abstract class PostRemoteDataSource {
   Future<List<PostModel>> getAllPosts();
@@ -28,7 +28,8 @@ abstract class PostRemoteDataSource {
   Future<Unit> editPost(String id, String content, File? image);
 }
 
-class PostRemoteDataSourceImpl implements PostRemoteDataSource {
+@Injectable(as: PostRemoteDataSource)
+class PostRemoteDataSourceImplement implements PostRemoteDataSource {
   @override
   Future<Unit> addPost(String userId, String userName, String userImage,
       String content, String date, File? image) async {
@@ -39,34 +40,29 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
           .putFile(image)
           .then((value) {
         value.ref.getDownloadURL().then((value) async {
-          await FirebaseFirestore.instance
-              .collection('posts')
-              .add({
-                'userId': userId,
-                'userName': userName,
-                'userImage': userImage ?? '',
-                'content': content,
-                'createAt': date,
-                'postImage': value
-              })
-              .then((value) {})
-              .catchError((error) {
-                print(error.toString());
-                throw ServerException();
-              });
-        }).catchError((error) {
-          print(error.toString());
+          await FirebaseFirestore.instance.collection('posts').add({
+            'userId': userId,
+            'userName': userName,
+            'userImage': userImage,
+            'content': content,
+            'createAt': date,
+            'postImage': value
+          }).then((value) {
+            return Future.value(unit);
+          }).catchError((_) {
+            throw ServerException();
+          });
+        }).catchError((_) {
           throw ServerException();
         });
-      }).catchError((error) {
-        print(error.toString());
+      }).catchError((_) {
         throw ServerException();
       });
     } else {
       await FirebaseFirestore.instance.collection('posts').add({
         'userId': userId,
         'userName': userName,
-        'userImage': userImage ?? '',
+        'userImage': userImage,
         'content': content,
         'createAt': date,
         'postImage': ''
@@ -141,7 +137,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     }).catchError((_) {
       throw ServerException();
     });
-    throw UnimplementedError();
+    return Future.value(unit);
   }
 
   @override
@@ -157,7 +153,7 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
     }).catchError((_) {
       throw ServerException();
     });
-    throw UnimplementedError();
+    return Future.value(unit);
   }
 
   @override
@@ -168,23 +164,23 @@ class PostRemoteDataSourceImpl implements PostRemoteDataSource {
         .doc(postId)
         .collection('likes')
         .get()
-        .then((value)async {
+        .then((value) async {
       for (var element in value.docs) {
         await FirebaseFirestore.instance
             .collection('users')
             .doc(element.id)
             .get()
             .then((value) {
-              userModel.add(UserModel.fromJson(value.data()!));
-        })
-            .catchError((_) {
-              throw ServerException();
+          userModel.add(UserModel.fromJson(value.data()!));
+          return Future.value(userModel);
+        }).catchError((_) {
+          throw ServerException();
         });
       }
-      return userModel;
+      return Future.value(userModel);
     }).catchError((_) {
       throw ServerException();
     });
-    throw UnimplementedError();
+    return Future.value(userModel);
   }
 }

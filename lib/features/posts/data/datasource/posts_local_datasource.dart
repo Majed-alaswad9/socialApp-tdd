@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../../../core/errors/exceptions.dart';
-import '../model/post_model.dart';
+
+import '../model/post_model/post_model.dart';
 
 abstract class PostsLocalDataSource {
   Future<List<PostModel>> getLocalPosts();
@@ -12,16 +14,16 @@ abstract class PostsLocalDataSource {
   Future<(String?, String?)> getLocalUser();
 }
 
-class PostsLocalDataSourceImpl implements PostsLocalDataSource {
+@Injectable(as: PostsLocalDataSource)
+class PostsLocalDataSourceImplement implements PostsLocalDataSource {
   final SharedPreferences sharedPreferences;
 
-  PostsLocalDataSourceImpl(this.sharedPreferences);
+  PostsLocalDataSourceImplement(this.sharedPreferences);
   @override
   Future<Unit> cachePosts(List<PostModel> posts) {
-    List postModelToJson =
-        posts.map<Map<String, dynamic>>((e) {
-          return e.toJson();
-        }).toList();
+    List postModelToJson = posts.map<Map<String, dynamic>>((e) {
+      return e.toJson();
+    }).toList();
     sharedPreferences.setString("CACHE_POSTS", json.encode(postModelToJson));
     return Future.value(unit);
   }
@@ -31,10 +33,9 @@ class PostsLocalDataSourceImpl implements PostsLocalDataSource {
     final jsonString = sharedPreferences.getString("CACHE_POSTS");
     if (jsonString!.isNotEmpty) {
       List decodeJsonData = json.decode(jsonString);
-      List<PostModel> postsModel =
-          decodeJsonData.map<PostModel>((e) {
-            return PostModel.fromLocalJson(e);
-          }).toList();
+      List<PostModel> postsModel = decodeJsonData.map<PostModel>((e) {
+        return PostModel.fromLocalJson(e);
+      }).toList();
       return Future.value(postsModel);
     } else {
       throw EmptyCacheException();

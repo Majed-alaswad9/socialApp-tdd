@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:injectable/injectable.dart';
 import 'package:social_app_tdd/core/errors/exceptions.dart';
 import 'package:social_app_tdd/core/strings/id_and_token.dart';
 import 'package:social_app_tdd/features/posts/data/model/user_model.dart';
@@ -18,6 +19,7 @@ abstract class AuthRemoteDataSource {
       String userName, String email, String uId, File? profileImage);
 }
 
+@Injectable(as: AuthRemoteDataSource)
 class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
   @override
   Future<Unit> login(String email, String password) async {

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:injectable/injectable.dart';
 import 'package:social_app_tdd/core/strings/id_and_token.dart';
 import '../../../../core/errors/exceptions.dart';
 import '../../../../core/errors/failures.dart';
@@ -10,12 +10,13 @@ import '../../domain/repositories/auth_repository.dart';
 import '../datasources/auth_local_datasources.dart';
 import '../datasources/auth_remote_datasource.dart';
 
-class AuthRepositoryImpl implements AuthRepository {
+@Injectable(as: AuthRepository)
+class AuthRepositoryImplement implements AuthRepository {
   final AuthRemoteDataSource authRemoteDataSource;
   final AuthLocalDataSource authLocalDataSource;
   final NetworkInfo networkInfo;
 
-  AuthRepositoryImpl(
+  AuthRepositoryImplement(
       {required this.authRemoteDataSource,
       required this.authLocalDataSource,
       required this.networkInfo});
@@ -49,16 +50,6 @@ class AuthRepositoryImpl implements AuthRepository {
       }
     } else {
       return Left(OfflineFailure());
-    }
-  }
-
-  @override
-  Future<Either<Failure, File>> pickProfileImage(ImageSource source) async {
-    final image = await ImagePicker().pickImage(source: source);
-    if (image != null) {
-      return Right(File(image.path));
-    } else {
-      return Left(NoImageFailure());
     }
   }
 }

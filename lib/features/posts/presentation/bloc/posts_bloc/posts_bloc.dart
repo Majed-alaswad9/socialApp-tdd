@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
-import 'package:social_app_tdd/features/posts/presentation/bloc/posts_bloc/posts_event.dart';
-import 'package:social_app_tdd/features/posts/presentation/bloc/posts_bloc/posts_state.dart';
-
+import 'package:injectable/injectable.dart';
+import 'package:social_app_tdd/features/posts/data/model/post_model/post_model.dart';
+import 'package:social_app_tdd/features/posts/data/model/user_model/user_model.dart';
 import '../../../../../core/errors/failures.dart';
 import '../../../../../core/strings/failure.dart';
 import '../../../../../core/strings/id_and_token.dart';
@@ -10,7 +10,13 @@ import '../../../domain/usecases/delete_like_usecase.dart';
 import '../../../domain/usecases/get_likes_usecase.dart';
 import '../../../domain/usecases/get_post_usecase.dart';
 import '../../../domain/usecases/get_user_info_usecase.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'posts_event.dart';
+part 'posts_state.dart';
+part 'posts_bloc.freezed.dart';
+
+@injectable
 class PostsBloc extends Bloc<PostsEvent, PostsState> {
   final GetAllPostsUseCase getAllPostsUseCase;
   final GetUserInfoUseCase getUserInfoUseCase;
@@ -24,28 +30,26 @@ class PostsBloc extends Bloc<PostsEvent, PostsState> {
       required this.addLikeUseCase,
       required this.deleteLikeUseCase,
       required this.getLikesUseCase})
-      : super(PostInitial()) {
+      : super(const PostsState.postInitial()) {
     on(<PostsEvent>(event, emit) async {
-      if (event is GetPostsEvent) {
-        emit(LoadingGetPostsState());
+      on<_$_getPostsEvent>((event, emit) async {
+        emit(const _$_loadingGetPostsState());
         final successOrFailure = await getAllPostsUseCase();
         successOrFailure.fold((l) {
-          emit(ErrorGetPostsState(_mapFailureToMessage(l)));
-        }, (r) {
-          emit(SuccessGetPostsState(r));
+          emit(_$_errorGetPostsState(_mapFailureToMessage(l)));
+        }, (success) {
+          emit(_$_successGetPostsState(success));
         });
-      } else if (event is GetUserInformationEvent) {
+      });
+      on<_$_getUserInformationEvent>((event, emit) async {
         final successOrFailure = await getUserInfoUseCase(userId!);
         successOrFailure.fold((l) {
-          emit(ErrorGetUserInformationState(_mapFailureToMessage(l)));
+          emit(_$_errorGetUserInformationState(_mapFailureToMessage(l)));
         }, (r) {
-          emit(SuccessGetUserInformationState(r));
+          emit(_$_successGetUserInformationState(r));
         });
-      } else if (event is AddLikeEvent) {
-        final successOrFailure = await addLikeUseCase(event.postId);
-      }
+      });
     });
-
   }
 }
 

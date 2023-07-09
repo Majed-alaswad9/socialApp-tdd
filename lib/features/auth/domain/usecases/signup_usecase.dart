@@ -1,10 +1,12 @@
 import 'dart:io';
 
 import 'package:dartz/dartz.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
 import '../repositories/auth_repository.dart';
 
+@injectable
 class SignupUseCase {
   final AuthRepository authRepository;
 

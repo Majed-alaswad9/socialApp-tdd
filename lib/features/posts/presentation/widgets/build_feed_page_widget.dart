@@ -6,48 +6,46 @@ import 'package:social_app_tdd/core/strings/id_and_token.dart';
 import 'package:social_app_tdd/core/util/chose_date_time.dart';
 import 'package:social_app_tdd/core/util/snackbar_message.dart';
 import 'package:social_app_tdd/core/widget/loading_widget.dart';
-import 'package:social_app_tdd/features/posts/data/model/post_model.dart';
 import 'package:social_app_tdd/features/posts/presentation/bloc/posts_bloc/posts_bloc.dart';
-import 'package:social_app_tdd/features/posts/presentation/bloc/posts_bloc/posts_event.dart';
 import 'package:social_app_tdd/injection_container.dart' as di;
 import '../../../../core/theme.dart';
 import '../../../../core/widget/build_popup_menu_button_widget.dart';
-import '../../../../core/widget/elevated_button_widget.dart';
-import '../bloc/posts_bloc/posts_state.dart';
+import '../../data/model/post_model/post_model.dart';
 
 class BuildFeedPageWidget extends StatelessWidget {
-  BuildFeedPageWidget({Key? key}) : super(key: key);
-  List<PostModel> postModel = [];
+  const BuildFeedPageWidget({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) => di.sl<PostsBloc>()
-        ..add(GetUserInformationEvent())
-        ..add(GetPostsEvent()),
+      create: (_) => di.getIt<PostsBloc>()
+        ..add(const PostsEvent.getUserInformationEvent())
+        ..add(const PostsEvent.getPostsEvent()),
       child: BlocConsumer<PostsBloc, PostsState>(
         listener: (context, state) {
-          if (state is SuccessGetPostsState) {
-            postModel = state.postModel;
-          } else if (state is ErrorGetPostsState) {
-            SnackBarMessage().snackBarMessageError(context, state.error);
-          }
-          if (state is SuccessGetUserInformationState) {
-            userId = state.userModel.uId;
-            userImage = state.userModel.profileImage;
-            userName = state.userModel.userName;
-            print('userName $userName userImage $userImage');
-          }
+          state.maybeWhen(
+            orElse: () {},
+            errorGetPostsState: (message) {
+              SnackBarMessage().snackBarMessageError(context, message);
+            },
+            successGetUserInformationState: (userModel) {
+              userId = userModel.uId;
+              userName = userModel.userName;
+              userImage = userModel.profileImage;
+            },
+          );
         },
-        builder: (context, state) {
-          if (state is LoadingGetPostsState) {
+        builder: (context, state) => state.maybeWhen(
+          orElse: () {
             return const LoadingWidget();
-          }
-          return RefreshIndicator(
-              color: primaryColor,
-              onRefresh: () => _onRefresh(context),
-              child: buildListViewPosts(postModel!));
-        },
+          },
+          successGetPostsState: (postModel) {
+            return RefreshIndicator(
+                color: primaryColor,
+                onRefresh: () => _onRefresh(context),
+                child: buildListViewPosts(postModel));
+          },
+        ),
       ),
     );
   }
@@ -250,6 +248,6 @@ class BuildFeedPageWidget extends StatelessWidget {
       );
 
   Future<void> _onRefresh(context) async {
-    BlocProvider.of<PostsBloc>(context).add(GetPostsEvent());
+    BlocProvider.of<PostsBloc>(context).add(const PostsEvent.getPostsEvent());
   }
 }

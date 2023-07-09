@@ -1,9 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:social_app_tdd/features/posts/data/model/post_model.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/errors/failures.dart';
+import '../../data/model/post_model/post_model.dart';
 import '../repository/posts_repository.dart';
 
+@injectable
 class GetAllPostsUseCase {
   final PostRepository postsRepository;
 
